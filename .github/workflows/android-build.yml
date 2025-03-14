@@ -20,18 +20,11 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Install Gradle
-        run: |
-          sudo apt update
-          sudo apt install -y gradle
-          gradle -v
+      - name: Clean Gradle Cache
+        run: rm -rf ~/.gradle/wrapper/dists ~/.gradle/caches/
 
-      - name: Recreate Gradle Wrapper
-        run: |
-          rm -rf gradlew gradle/wrapper/
-          gradle wrapper
-          chmod +x gradlew
-          ls -la
+      - name: Force Gradle Version 8.1.1
+        run: ./gradlew wrapper --gradle-version 8.1.1
 
       - name: Grant execute permission for Gradlew
         run: chmod +x gradlew
