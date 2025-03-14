@@ -3,7 +3,7 @@ name: Build Android APK
 on:
   push:
     branches:
-      - main  # Или твоя основная ветка
+      - main
   workflow_dispatch:
 
 jobs:
@@ -14,20 +14,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Check Repository Structure
+        run: ls -la
+
+      - name: Check App Folder
+        run: ls -la app
+
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Set up Android SDK
-        run: echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
-
       - name: Grant execute permission for Gradlew
         run: chmod +x gradlew
 
-      - name: Clear Gradle Cache
-        run: rm -rf ~/.gradle/caches/
+      - name: Check Gradle Version
+        run: ./gradlew --version
 
       - name: Build APK with Debug Log
         run: ./gradlew assembleDebug --stacktrace --info
