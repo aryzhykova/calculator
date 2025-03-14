@@ -1,9 +1,10 @@
-name: Android Build
+name: Build Android APK
 
 on:
   push:
     branches:
-      - main
+      - main  # Или твоя основная ветка
+  workflow_dispatch:
 
 jobs:
   build:
@@ -11,21 +12,18 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Set up JDK 17
+      - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
+          distribution: 'zulu'
           java-version: '17'
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v2
+      - name: Set up Gradle cache
+        uses: gradle/gradle-build-action@v2
 
-      - name: Grant execute permission for Gradlew
-        run: chmod +x gradlew
-
-      - name: Build debug APK
+      - name: Build APK
         run: ./gradlew assembleDebug
 
       - name: Upload APK
